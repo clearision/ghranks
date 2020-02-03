@@ -1,0 +1,5 @@
+development:
+  token: e2e8b00043ebbf972800075f09633fdd7bbe2ae0 # public safe
+
+test:
+  token: test
