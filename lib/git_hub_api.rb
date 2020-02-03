@@ -29,7 +29,9 @@ class GitHubApi
     def handle_get_request path
       request = Net::HTTP::Get.new(path)
       request['Authorization'] = "token #{Rails.configuration.github.token}"
-      http_client.request(request)
+      response = http_client.request(request)
+
+      return JSON.parse(response.body), response.code, has_next_page?(response)
     end
 
     def has_next_page? response

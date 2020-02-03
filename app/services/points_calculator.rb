@@ -1,5 +1,5 @@
 class PointsCalculator
-  attr_reader :repo, :points
+  attr_reader :repo, :points, :pulls
 
   PULL_COMMENT_POINTS = 1
   PULL_REVIEW_POINTS = 3
@@ -25,12 +25,11 @@ class PointsCalculator
     end
 
     def sum_pulls_points
-      pulls = GitHub::PullRequestsApi.new(repo).fetch
+      @pulls = GitHub::PullRequestsApi.new(repo).fetch
       add_to_sum pulls, PULL_REQUEST_POINTS
     end
 
     def sum_reviews_points
-      pulls = GitHub::PullRequestsApi.new(repo).fetch
       reviews = GitHub::ReviewsApi.new(repo).fetch pulls
       add_to_sum reviews, PULL_REVIEW_POINTS
     end

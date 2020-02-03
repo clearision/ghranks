@@ -6,7 +6,6 @@ class CreateReports < ActiveRecord::Migration[6.0]
       t.integer :state, default: 0
 
       t.timestamps
-
     end
 
     add_index :reports, :repo, unique: true

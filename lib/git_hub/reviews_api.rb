@@ -8,8 +8,8 @@ class GitHub::ReviewsApi < GitHubApi
   private
 
     def fetch_data pull_request_id, reviews = [], page = 1
-      response = handle_get_request request_path(pull_request_id, page)
-      body = JSON.parse(response.body)
+      body, code, next_page = handle_get_request request_path(pull_request_id, page)
+      return reviews unless code == '200'
 
       new_items = body.select do |item|
           item['submitted_at'] >= date_week_ago
@@ -17,11 +17,9 @@ class GitHub::ReviewsApi < GitHubApi
           { id: item['id'], user_id: item['user']['login'] }
         end
 
-      if has_next_page?(response)
-        get_reviews(reviews.concat(new_items), page+1)
-      else
-        reviews.concat(new_items)
-      end
+      return reviews.concat(new_items) unless next_page
+
+      fetch_data(pull_request_id, reviews.concat(new_items), page+1)
     end
 
     def request_path pull_request_id, page = 1

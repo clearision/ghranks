@@ -1,4 +1,4 @@
-class ReportsController < ActionController::API
+class ReportsController < ApplicationController
   before_action :set_report, only: [:show, :destroy]
 
   # GET /reports/1
