@@ -1,24 +1,37 @@
-# README
+# GitHub Ranks
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Get top-10 contributors for the specific repository using GitHub API.
 
-Things you may want to cover:
 
-* Ruby version
+## Requirements
 
-* System dependencies
+Ruby 2.6.3
 
-* Configuration
 
-* Database creation
+## Setup
 
-* Database initialization
+```
+bundle install
+rake db:migrate db:seed
+```
 
-* How to run the test suite
+It will create a sample report for `rails/rails` repo in the database.
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+## Running
 
-* ...
+`rails s`
+
+Use `localhost:3000/` to access API
+
+
+## API endpoints
+
+`POST /reports` Create top-ten report for `org/repository`.\
+Example params:  `{ report: { repo: "org/repository" } }`\
+Creates an empty report and enqueues an async job to calculate the values.\
+Once calculated, the data will appear in `GET /reports/:id` endpoint response.
+
+`GET /reports/:id` Get the report information.
+
+`DELETE /reports/:id` Delete the report
